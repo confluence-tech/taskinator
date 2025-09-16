@@ -205,7 +205,9 @@ module Taskinator
       end
 
       def task_completed(task)
-        # decrement the count of pending sequential tasks
+        # skip if failed
+        return if failed?
+        # deincrement the count of pending sequential tasks
         pending = deincr_pending_tasks
 
         Taskinator.logger.info("Completed task for process '#{uuid}'. Pending is #{pending}.")
