@@ -1,6 +1,6 @@
 v?.?.? - ?? ??? ????
 ---
-* Rails 8 / Psych 4.0+ compatibility: Updated `deserialize` method to use `safe_load` with permitted classes for YAML deserialization. Fixes compatibility with Psych 4.0+ which requires explicit class allowlist for safe loading.
+* Rails 8 / Psych 4.0+ compatibility: Simplified `deserialize` method to use `YAML.load` which allows the host application to handle Psych configuration via monkey patches. This provides better flexibility for applications to manage their own YAML security policies.
 
 v0.5.2 - 04 Oct 2024
 ---

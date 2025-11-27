@@ -704,27 +704,10 @@ module Taskinator
       end
 
       def deserialize(yaml)
-        # Rails 8 / Psych 4.0+ compatibility: specify permitted classes
-        # Allow common Ruby/Rails classes and GlobalID for model serialization
-        permitted_classes = [
-          Date, Time, DateTime, Symbol, Range, Regexp, Set, Struct, BigDecimal,
-          ActiveSupport::TimeWithZone, ActiveSupport::TimeZone,
-          ActiveSupport::Duration, ActiveSupport::HashWithIndifferentAccess,
-          GlobalID, GlobalID::Locator, URI::GID
-        ]
-
-        values = if YAML.respond_to?(:unsafe_load)
-          # Psych 4.0+: use unsafe_load or safe_load with permitted_classes
-          begin
-            YAML.safe_load(yaml, permitted_classes: permitted_classes, aliases: true)
-          rescue ArgumentError
-            # Fallback for older Psych versions
-            YAML.load(yaml)
-          end
-        else
-          # Older Psych versions
-          YAML.load(yaml)
-        end
+        # Rails 8 / Psych 4.0+ compatibility:
+        # Use YAML.load which is patched in the application to use unsafe_load
+        # for trusted internal YAML (background job arguments)
+        values = YAML.load(yaml)
 
         if values.is_a?(Array)
           values = values.collect {|value|
