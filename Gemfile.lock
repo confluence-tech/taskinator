@@ -179,7 +179,7 @@ DEPENDENCIES
   rspec
   rspec-rails (>= 2.0)
   rspec-sidekiq (>= 2.1.0)
-  sidekiq (>= 3.5.0, < 8.0.0)
+  sidekiq (>= 3.5.0, < 7.0.0)
   taskinator!
 
 BUNDLED WITH
