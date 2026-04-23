@@ -16,7 +16,7 @@ gem 'resque_spec'     , '>= 0.16.0'
 # other
 gem 'bundler'         , '>= 1.6.0'
 gem 'rake'            , '>= 10.3.0'
-gem 'activesupport'   , '~> 5.2.0'
+gem 'activesupport'   , '>= 5.2'
 
 gem 'rspec'
 gem 'rspec-rails'     , '>= 2.0'

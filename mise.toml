@@ -1,0 +1,14 @@
+[tools]
+ruby = "3.4.7"
+
+[tasks.install]
+description = "Install gem dependencies"
+run = "bundle install"
+
+[tasks.test]
+description = "Run the RSpec test suite"
+run = "bundle exec rspec"
+
+[tasks.console]
+description = "Open an IRB console with the gem loaded"
+run = "bundle exec irb -r ./lib/taskinator.rb"
