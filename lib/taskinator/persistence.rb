@@ -220,7 +220,7 @@ module Taskinator
           RedisCleanupVisitor.new(conn, self, expire_in).visit
 
           # remove from the list
-          conn.srem(Persistence.processes_list_key(scope), uuid)
+          conn.srem?(Persistence.processes_list_key(scope), uuid)
 
         end
       end
