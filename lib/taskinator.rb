@@ -76,6 +76,21 @@ module Taskinator
       @redis = Taskinator::RedisConnection.create(hash)
     end
 
+    # Drain the Redis connection pool and reset it. The next call to
+    # Taskinator.redis (or Taskinator.redis_pool) will lazily create a
+    # fresh pool with new connections.
+    #
+    # Intended for use in fork() hooks (Resque/Sidekiq before_fork) to
+    # avoid sharing Redis sockets between parent and child processes,
+    # which corrupts the protocol stream and surfaces as
+    # Redis::TimeoutError on later operations.
+    def disconnect!
+      return unless @redis
+
+      @redis.shutdown { |conn| conn.disconnect rescue nil }
+      @redis = nil
+    end
+
     def logger
       Taskinator::Logging.logger
     end

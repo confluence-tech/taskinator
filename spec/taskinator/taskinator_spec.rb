@@ -38,6 +38,19 @@ describe Taskinator do
     it { expect(subject.redis_pool).to_not be_nil }
   end
 
+  describe "#disconnect!" do
+    it "is a no-op when the pool was never created" do
+      subject.instance_variable_set(:@redis, nil)
+      expect { subject.disconnect! }.not_to raise_error
+    end
+
+    it "drops the memoized pool so a fresh one is created on next access" do
+      pool = subject.redis_pool
+      subject.disconnect!
+      expect(subject.redis_pool).not_to equal(pool)
+    end
+  end
+
   describe "#queue_config" do
     it {
       subject.queue_config = {:a => 1}
