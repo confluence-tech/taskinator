@@ -69,16 +69,18 @@ module Taskinator
     end
 
     def redis_pool
-      @redis ||= Taskinator::RedisConnection.create
+      @redis ||= Taskinator::RedisConnection.create(@redis_options || {})
     end
 
     def redis=(hash)
+      @redis_options = hash
       @redis = Taskinator::RedisConnection.create(hash)
     end
 
     # Drain the Redis connection pool and reset it. The next call to
     # Taskinator.redis (or Taskinator.redis_pool) will lazily create a
-    # fresh pool with new connections.
+    # fresh pool with new connections, reusing the options previously
+    # supplied via Taskinator.redis=.
     #
     # Intended for use in fork() hooks (Resque/Sidekiq before_fork) to
     # avoid sharing Redis sockets between parent and child processes,

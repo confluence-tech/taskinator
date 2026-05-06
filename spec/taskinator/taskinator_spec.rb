@@ -49,6 +49,14 @@ describe Taskinator do
       subject.disconnect!
       expect(subject.redis_pool).not_to equal(pool)
     end
+
+    it "reuses the previously configured options when re-creating the pool" do
+      options = { :url => "redis://example.test:6379/3", :namespace => "tt" }
+      expect(Taskinator::RedisConnection).to receive(:create).with(options).twice.and_return(double(:shutdown => nil))
+      subject.redis = options
+      subject.disconnect!
+      subject.redis_pool
+    end
   end
 
   describe "#queue_config" do
