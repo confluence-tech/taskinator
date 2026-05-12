@@ -156,7 +156,11 @@ module Taskinator
           fail(error) if respond_to?(:fail)
           # notify the parent task (if there is one) that this process has failed
           # note: parent may be a proxy, so explicitly check for nil?
-          parent.fail!(error) unless parent.nil?
+          unless parent.nil?
+            parent.fail!(error)
+          else
+            cleanup
+          end
         end
       end
     end
